@@ -6,7 +6,7 @@
 /*   By: juzoanya <juzoanya@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 10:28:51 by juzoanya          #+#    #+#             */
-/*   Updated: 2022/09/28 21:15:49 by juzoanya         ###   ########.fr       */
+/*   Updated: 2022/10/01 21:23:48 by juzoanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,18 +66,21 @@ long	gettime(void)
 int	is_dead_philo(t_env *env, t_philo *philo)
 {
 	long int	time;
+	long		std_eat;
 
-	//if (*n == env->args.nbr)
-	//	*n = 0;
 	pthread_mutex_lock(&env->time);
 	time = gettime();
+	std_eat = philo->std_eat;
 	pthread_mutex_unlock(&env->time);
-	if (time - philo->std_eat > (philo->args.tt_die / 1000))
+	if (time - std_eat > (philo->args.tt_die / 1000))
 	{
 		pthread_mutex_lock(&env->print);
 		printf("%s%ld %d died\e[0m\n", "\e[1;31m", time, philo->id);
 		env->dead = 1;
 		pthread_mutex_unlock(&env->print);
+		pthread_mutex_lock(&env->death);
+		env->dead = 1;
+		pthread_mutex_unlock(&env->death);
 		return (1);
 	}
 	return (0);

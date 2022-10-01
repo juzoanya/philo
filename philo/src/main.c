@@ -6,7 +6,7 @@
 /*   By: juzoanya <juzoanya@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 23:35:13 by juzoanya          #+#    #+#             */
-/*   Updated: 2022/09/26 19:25:49 by juzoanya         ###   ########.fr       */
+/*   Updated: 2022/10/01 19:27:21 by juzoanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int	clean_philo(t_env *env)
 	if (pthread_mutex_destroy(&env->time) != 0)
 		return (0);
 	if (pthread_mutex_destroy(&env->var_chg) != 0)
+		return (0);
+	if (pthread_mutex_destroy(&env->death) != 0)
 		return (0);
 	free(env->forks);
 	free(env->philo);
@@ -52,6 +54,8 @@ void	run_philo(t_env *env)
 	if (pthread_mutex_init(&env->time, NULL) != 0)
 		printf("mutex init error!\n");
 	if (pthread_mutex_init(&env->var_chg, NULL) != 0)
+		printf("mutex init error!\n");
+	if (pthread_mutex_init(&env->death, NULL) != 0)
 		printf("mutex init error!\n");
 	init_threads(env);
 	return ;

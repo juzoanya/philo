@@ -6,7 +6,7 @@
 /*   By: juzoanya <juzoanya@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 20:50:57 by juzoanya          #+#    #+#             */
-/*   Updated: 2022/09/28 21:21:51 by juzoanya         ###   ########.fr       */
+/*   Updated: 2022/10/01 19:26:54 by juzoanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct s_env
 	pthread_mutex_t	print;
 	pthread_mutex_t	time;
 	pthread_mutex_t	var_chg;
+	pthread_mutex_t	death;
 }					t_env;
 
 //error handling function
