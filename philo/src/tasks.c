@@ -6,7 +6,7 @@
 /*   By: juzoanya <juzoanya@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 19:29:48 by juzoanya          #+#    #+#             */
-/*   Updated: 2022/09/29 07:33:20 by juzoanya         ###   ########.fr       */
+/*   Updated: 2022/10/02 13:21:24 by juzoanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	ft_eating(t_env *env, t_philo *philo)
 	pthread_mutex_unlock(&env->forks[philo->fork.left]);
 	pthread_mutex_lock(&env->var_chg);
 	philo->eat_cnt++;
-	+pthread_mutex_unlock(&env->var_chg);
+	pthread_mutex_unlock(&env->var_chg);
 	pthread_mutex_lock(&env->print);
 	if (env->dead == 0)
 		printf("%s%ld %d is sleeping\e[0m\n", "\e[1;35m", \
