@@ -6,7 +6,7 @@
 /*   By: juzoanya <juzoanya@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 20:31:38 by juzoanya          #+#    #+#             */
-/*   Updated: 2022/10/01 21:19:49 by juzoanya         ###   ########.fr       */
+/*   Updated: 2022/10/02 13:28:35 by juzoanya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ void	*routine(void *content)
 {
 	t_env	*env;
 	t_philo	*philo;
-	//int		i;
+	int		dead_state;
+	int		eat_cnt;
 
 	env = (t_env *)content;
 	pthread_mutex_lock(&env->var_chg);
@@ -50,12 +51,36 @@ void	*routine(void *content)
 		usleep(philo->args.tt_eat / 2);
 	if (philo->args.nbr_meal > 0)
 	{
-		while (philo->eat_cnt != philo->args.nbr_meal && env->dead == 0)
+		pthread_mutex_lock(&env->death);
+		dead_state = env->dead;
+		pthread_mutex_unlock(&env->death);
+		pthread_mutex_lock(&env->var_chg);
+		eat_cnt = philo->eat_cnt;
+		pthread_mutex_unlock(&env->var_chg);
+		while (eat_cnt != philo->args.nbr_meal && dead_state == 0)
+		{
 			exec_actions(env, philo);
+			pthread_mutex_lock(&env->death);
+			dead_state = env->dead;
+			pthread_mutex_unlock(&env->death);
+			pthread_mutex_lock(&env->var_chg);
+			eat_cnt = philo->eat_cnt;
+			pthread_mutex_unlock(&env->var_chg);
+		}
 	}
 	else
-		while (env->dead == 0)
+	{
+		pthread_mutex_lock(&env->death);
+		dead_state = env->dead;
+		pthread_mutex_unlock(&env->death);
+		while (dead_state == 0)
+		{
 			exec_actions(env, philo);
+			pthread_mutex_lock(&env->death);
+			dead_state = env->dead;
+			pthread_mutex_unlock(&env->death);
+		}
+	}
 	return (NULL);
 }
 
